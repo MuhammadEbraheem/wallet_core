@@ -17,7 +17,7 @@ class MarketApi extends Api {
   }
 
   Future<Map<String, dynamic>> _get(String endpoint) async {
-    Response response = await _client.get('$_base/$endpoint');
+    Response response = await _client.get(Uri.parse('$_base/$endpoint'));
     return responseHandler(response);
   }
 

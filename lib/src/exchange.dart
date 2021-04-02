@@ -17,13 +17,13 @@ class Exchange extends Api {
 
   Future<Map<String, dynamic>> _get(String endpoint) async {
     print('Exchange - GET $_base/$endpoint');
-    Response response = await _client.get('$_base/$endpoint');
+    Response response = await _client.get(Uri.parse('$_base/$endpoint'));
     return responseHandler(response);
   }
 
   Future<Map<String, dynamic>> _post(String endpoint, {Map body}) async {
     print('Exchange - POST $_base/$endpoint');
-    Response response = await _client.post('$_base/$endpoint',
+    Response response = await _client.post(Uri.parse('$_base/$endpoint'),
         headers: {"Content-Type": 'application/json'}, body: json.encode(body));
     return responseHandler(response);
   }
