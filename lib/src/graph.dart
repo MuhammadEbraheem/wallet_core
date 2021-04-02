@@ -17,16 +17,14 @@ class Graph {
     String url = BASE_URL,
     String subGraph,
   }) {
-    _clientFuse = GraphQLClient(
-        link: HttpLink(uri: '$url/$subGraph'), cache: InMemoryCache());
+    _clientFuse =
+        GraphQLClient(link: HttpLink('$url/$subGraph'), cache: GraphQLCache());
     _clientFuseEntities = GraphQLClient(
-        link: HttpLink(uri: '$url/fuse-entities'), cache: InMemoryCache());
+        link: HttpLink('$url/fuse-entities'), cache: GraphQLCache());
     _clientFuseRopstenBridge = GraphQLClient(
-        link: HttpLink(uri: '$url/fuse-ropsten-bridge'),
-        cache: InMemoryCache());
+        link: HttpLink('$url/fuse-ropsten-bridge'), cache: GraphQLCache());
     _clientFuseMainnetBridge = GraphQLClient(
-        link: HttpLink(uri: '$url/fuse-ethereum-bridge'),
-        cache: InMemoryCache());
+        link: HttpLink('$url/fuse-ethereum-bridge'), cache: GraphQLCache());
   }
 
   Future<dynamic> getCommunityByAddress(String communityAddress) async {
@@ -68,7 +66,7 @@ class Graph {
       },
     ));
     if (result.hasException) {
-      throw 'Error! Get home bridge token request failed - foreignTokenAddress: $foreignTokenAddress ${result.exception.clientException.message}';
+      throw 'Error! Get home bridge token request failed - foreignTokenAddress: $foreignTokenAddress ${result.exception.linkException.originalException}';
     } else {
       return result.data["bridgedTokens"][0];
     }
@@ -90,7 +88,7 @@ class Graph {
 
   Future<bool> isCommunityMember(
       String accountAddress, String entitiesListAddress) async {
-    _clientFuseEntities.cache.reset();
+    // _clientFuseEntities.cache.reset();
     QueryResult result = await _clientFuseEntities.query(QueryOptions(
       documentNode: gql(isCommunityMemberQuery),
       variables: <String, dynamic>{
@@ -106,7 +104,7 @@ class Graph {
   }
 
   Future<dynamic> getTokenByAddress(String tokenAddress) async {
-    _clientFuse.cache.reset();
+    // _clientFuse.cache.reset();
     QueryResult result = await _clientFuse.query(QueryOptions(
       documentNode: gql(getTokenByAddressQuery),
       variables: <String, dynamic>{
